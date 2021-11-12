@@ -1,0 +1,130 @@
+<html>
+<head> <!-- head creates the browser tab name -->
+    <title>{% block content %}{% endblock %}</title>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <style>
+        :root{
+            --white: whitesmoke;
+            --black: black;
+            --grey: grey;
+        }
+
+        html, body{
+            line-height: normal;
+            margin: 0;
+            height: 100%;
+            overflow: auto;
+            animation: fadein: 2s;
+            -moz-animation: fadein 2s; /* Firefox */
+            -webkit-animation: fadein 2s; /* Safari and Chrome */
+            -o-animation: fadein 2s; /* Opera */
+            font-family: "serif";
+            color: orange;
+            margin: 20px 50px 20px 20px;
+        }
+        table, th, td {
+            border:2px solid black;
+            border-collapse: collapse;
+            background-color:white;
+            color:black;
+        }
+        h1{
+            font-size: 55px;
+            text-shadow: 2px 2px darkred;
+        }
+        h2{
+            text-shadow: 2px 2px darkred;
+            font-size: 40px
+        }
+        p{
+            text-shadow: 2px 2px darkred;
+            font-size: 25px;
+        }
+        button {
+            color:white;
+            background-color: dodgerblue;
+            border-radius: 12px;
+            box-shadow: 0 9px #999;
+            text-shadow: 2px 2px black;
+        }
+        button:hover {background-color: deepskyblue}
+
+        button:active {
+            background-color: deepskyblue;
+            box-shadow: 0 5px #666;
+            transform: translateY(4px);
+        }
+        input[type=submit] {
+            color:white;
+            background-color: dodgerblue;
+            border-radius: 12px;
+            box-shadow: 0 9px #999;
+            text-shadow: 2px 2px black;
+        }
+        input[type=submit]:hover {background-color: deepskyblue}
+
+        input[type=submit]:active {
+            background-color: deepskyblue;
+            box-shadow: 0 5px #666;
+            transform: translateY(4px);
+        }
+        input[type=button] {
+            color:white;
+            background-color: dodgerblue;
+            border-radius: 12px;
+            box-shadow: 0 9px #999;
+            text-shadow: 2px 2px black;
+        }
+        input[type=button]:hover {background-color: deepskyblue}
+
+        input[type=button]:active {
+            background-color: deepskyblue;
+            box-shadow: 0 5px #666;
+            transform: translateY(4px);
+        }
+        label {
+            text-shadow: 2px 2px black;
+        }
+
+
+    </style>
+</head>
+<body> <!-- body is what is actually displayed on the page -->
+{% block script %}
+{% endblock %}
+<nav class="navbar navbar-expand-lg">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav">
+            <li class="nav-item active">
+                <a class="nav-link" style="color:orange;" href="/">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" style="color:orange;" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Dropdown link
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <a class="dropdown-item" href="#">Action</a>
+                    <a class="dropdown-item" href="#">Another action</a>
+                    <a class="dropdown-item" href="#">Something else here</a>
+                </div>
+            </li>
+        </ul>
+    </div>
+</nav>
+{% block body %}
+{% endblock %}
+</body>
+
+{% block background %}
+{% endblock %}
+
+</html>
