@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block script %}
+<script>
+    function truncate (num, places) {
+        return Math.trunc(num * Math.pow(10, places)) / Math.pow(10, places);
+    }
+    function calculate(){
+        let desiredGrade = document.getElementById("desired").value;
+        desiredGrade = truncate(desiredGrade, 2);
+        let currentGrade = document.getElementById("current").value;
+        currentGrade = truncate(currentGrade, 2);
+        let catWeight = document.getElementById("catWeight").value;
+        catWeight = truncate(catWeight, 2);
+        let currentPoints = document.getElementById("currentPoints").value;
+        currentPoints = truncate(currentPoints, 2);
+        let currentPossiblePoints = document.getElementById("currentPossible").value;
+        currentPossiblePoints = truncate(currentPossiblePoints, 2);
+        let pointsOfFinal = document.getElementById("pointsOfFinal").value;
+        pointsOfFinal = truncate(pointsOfFinal, 2);
+        let finalPossiblePoints = currentPossiblePoints + pointsOfFinal;
+        let leftOver = currentGrade - (catWeight * (currentPoints/currentPossiblePoints));
+        leftOver = (100-catWeight) - leftOver;
+        let neededPercent = (catWeight - (100-(desiredGrade + leftOver)))/catWeight
+        neededPercent = neededPercent * finalPossiblePoints - currentPoints
+        neededPercent = neededPercent/pointsOfFinal * 100
+        neededPercent = truncate(neededPercent, 2)
+        document.getElementById("change2").innerHTML = "You need a " + neededPercent + "% to get a " + desiredGrade + "% in the class"
+    }
+    function calculator2(){
+        let desired = document.getElementById("desired2").value;
+        desired = truncate(desired, 2);
+        let current = document.getElementById("current2").value;
+        current = truncate(current, 2);
+        let finalWeight = document.getElementById("finalWeight").value;
+        finalWeight = truncate(finalWeight, 2);
+        let percentNeeded = ((desired - ((current/100) * (100-finalWeight)))/finalWeight) * 100;
+        document.getElementById("change3").innerHTML = "You need a " + percentNeeded + "% to get a " + desired + "% in the class"
+    }
+</script>
+{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <h1>Final Grade Calculator Page</h1>
+        </div>
+        <div class="col-12">
+            <form id="form">
+                <p> Calculator for if your final counts as a test</p>
+                <label> What is your desired final grade? &nbsp;</label><input id="desired" placeholder="e.g. 90"> <label>%</label><br>
+                <label> What is your current grade? &nbsp;</label><input id="current" placeholder="e.g. 85"><label>%</label><br>
+                <label>What is the percentage weight of the test category? &nbsp;</label><input id="catWeight" placeholder = 'e.g. 80'><label>%</label><br>
+                <label>How many current points do you have in the test category? &nbsp;</label><input id="currentPoints" placeholder = 'e.g. 500'><label>points</label><br>
+                <label>How many total possible points are in the test category &nbsp;</label><input id="currentPossible" placeholder = 'e.g. 550'><label>points</label><br>
+                <label>How many points is the final worth? &nbsp;</label><input id="pointsOfFinal" placeholder = 'e.g. 100'><label>points</label><br>
+                <input type="button" value="Calculate" onclick="calculate()">
+            </form>
+            <p id="change2"></p>
+            <p>Calculator for if your final counts as a percent of your grade</p>
+            <form id="form2">
+                <label>What is your desired final grade? &nbsp;</label><input id="desired2" placeholder="e.g. 90"><label>%</label><br>
+                <label>What is your current grade? &nbsp;</label><input id="current2" placeholder="e.g. 80"><label>%</label><br>
+                <label>What percent of your grade is your final worth? &nbsp;</label><input id="finalWeight" placeholder="e.g. 25"><label>%</label><br>
+                <input type="button" value="Calculate" onclick="calculator2()">
+            </form>
+            <p id="change3"></p>
+        </div>
+    </div>
+</div>
+{% endblock %}

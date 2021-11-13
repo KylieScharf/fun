@@ -1,0 +1,160 @@
+{% extends "base.html" %}
+
+{% block script %}
+<script>
+    function truncate (num, places) {
+        return Math.trunc(num * Math.pow(10, places)) / Math.pow(10, places);
+    }
+    function factorial(n){
+        let factor = 1
+        let newNum = 0
+        if (n === 1 || n === 0){
+            factor = 1
+        }
+        else{
+            for (let i=0; i < n; i++){
+                newNum = n - i;
+                factor = factor * newNum;
+            }
+        }
+        return factor
+    }
+    function grammar(end){
+        if (end === 1){
+            end += "st"
+        }
+        else if (end === 2){
+            end += "nd"
+        }
+        else if (end === 3){
+            end += "rd"
+        }
+        else{
+            end += "th"
+        }
+        return end
+    }
+    function statistic(id, prob){
+        if(prob >= .05){
+            document.getElementById(id).innerHTML = "This probability is not statistically signifigant and can happen by chance easily!"
+        }
+        else{
+            document.getElementById(id).innerHTML = "This probability is statistically signifigant and does not happen often by chance. I would be skeptical if someone said this occured!"
+        }
+    }
+    function geometricPDF(){
+        let probSuccess = document.getElementById("probSuccess").value;
+        probSuccess = truncate(probSuccess, 4);
+        let numOfSuccess = document.getElementById("numOfSuccess").value;
+        numOfSuccess = truncate(numOfSuccess, 4);
+        let prob = (1 - probSuccess) ** (numOfSuccess - 1)
+        prob = probSuccess * prob
+        let end = grammar(numOfSuccess)
+        document.getElementById("geometricPDF").innerHTML = "There is a " + prob + "&nbsp; probability or a &nbsp;" + prob*100 + "% chance of getting the first success on the " + end + "&nbsp;trial!"
+        statistic("statistic", prob)
+    }
+    function geometricCDF(){
+        let probSuccess = document.getElementById("probSuccess2").value;
+        probSuccess = truncate(probSuccess, 4);
+        let lowerBound = document.getElementById("lowerBound").value;
+        lowerBound = truncate(lowerBound, 4);
+        let upperBound = document.getElementById("uppedBound").value;
+        upperBound = truncate(upperBound, 4);
+        let prob1 = 0
+        let prob = 0
+        for (let i=lowerBound; i <= upperBound; i++){
+            prob = probSuccess * (1 - probSuccess) ** (i - 1)
+            prob1 = prob1 + prob
+        }
+        let end1 = grammar(lowerBound)
+        let end2 = grammar(upperBound)
+        document.getElementById("geometricCDF").innerHTML = "There is a " + prob1 + "&nbsp; probability or a &nbsp;"+ prob1*100 + "% chance of getting the first success between the &nbsp;" + end1 + "&nbsp;trial and the &nbsp;" + end2 + "&nbsp;trial"
+        statistic("statistic2", prob1)
+    }
+    function binomialCDF(){
+        let probSuccess = document.getElementById("probSuccess3").value;
+        probSuccess = truncate(probSuccess, 4);
+        let numTrials = document.getElementById("numTrials").value;
+        numTrials = truncate(numTrials, 4);
+        let lowerBound = document.getElementById("lowerBound2").value;
+        lowerBound = truncate(lowerBound, 4);
+        let upperBound = document.getElementById("upperBound2").value;
+        upperBound = truncate(upperBound, 4);
+        let prob = 0;
+        let prob1 = 0;
+        let num1 = factorial(numTrials);
+        let num2 = 0;
+        let num3 = 0;
+        for(let i=lowerBound; i <= upperBound; i++){
+            num2 = (factorial(i) * factorial(numTrials - i));
+            num3 = num1/num2
+            prob = num3 * (probSuccess) ** i * (1-probSuccess) ** (numTrials - i);
+            prob1 = prob + prob1;
+        }
+        document.getElementById("binomialCDF").innerHTML = "There is a " + prob1 + "&nbsp; probability or a " + prob1*100 + "% chance of getting between " + lowerBound + " and " + upperBound + " successes in " + numTrials + " trials!"
+        statistic("statistic3", prob1)
+    }
+    function binomialPDF(){
+        let probSuccess = document.getElementById("probSuccess4").value;
+        probSuccess = truncate(probSuccess, 4);
+        let numTrials = document.getElementById("numTrials2").value;
+        numTrials = truncate(numTrials, 4);
+        let successfullTrials = document.getElementById("succesfullTrials").value;
+        successfullTrials = truncate(successfullTrials, 4);
+        let factor = (factorial(numTrials))/ ((factorial(successfullTrials) * factorial(numTrials - successfullTrials)));
+        let prob = factor * (probSuccess) ** successfullTrials * (1-probSuccess) ** (numTrials - successfullTrials);
+        document.getElementById("binomialPDF").innerHTML = "There is a " + prob + " probability or a " + prob*100 + "% chance of getting " + successfullTrials + " successfull trials in " + numTrials + " trials!"
+        statistic("statistic4", prob)
+    }
+</script>
+{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <h1><center>Probability Calculator</center></h1>
+            <form>
+                <p>Geometric PDF: <br> Probability of the first success happening on the nth trial</p>
+                <p>let y = trial of first success of event A: P(y = n) = ? </p>
+                <label>What is the probability of success of A (p = ?) &nbsp;</label><input id="probSuccess"><br>
+                <label>What is the trial of the first success (n = ?) &nbsp;</label><input id="numOfSuccess"><br>
+                <input type="button" value="Calculate" onclick="geometricPDF()"><br>
+            </form>
+            <p id="geometricPDF"></p>
+            <p id="statistic"></p><br> <!-- ID is passed as a parameter to statistic that tests if the probability is less than 5 which is statistically signifigant" -->
+            <form>
+                <p>Geometric CDF: <br> Probability of the first success happening within n trials/the first success happening after n trials</p>
+                <p>let y = trial of first success of event A: P(y >= or <= n) = ?</p>
+                <label>What is the probability of Success of A? &nbsp;</label><input id="probSuccess2"><br>
+                <label>What is the lower bound (y > ?) &nbsp;</label><input id="lowerBound"><label>(Hint: An event can't have less than 1 trial)</label><br>
+                <label>What is the upper bound? (y < ?)  &nbsp;</label><input id="uppedBound"><br>
+                <input type="button" value="Calculate" onclick="geometricCDF()">
+            </form>
+            <p id="geometricCDF"></p>
+            <p id="statistic2"></p><br>
+            <form>
+                <p>Binomial CDF: <br> Probability of getting greater/less than k successes in n trials</p>
+                <p>let x = # of succesfull trials of event A: P(x >= or <= n) = ?</p>
+                <label>What is the probability of success? (p = ?) &nbsp;</label><input id="probSuccess3"><br>
+                <label>What is the number of trials? (n = ?) &nbsp;</label><input id="numTrials"><br>
+                <label>What is the lower bound? (number of successes is above ?)&nbsp;</label><input id="lowerBound2"><br>
+                <label>What is the upper bound? (number of successes is below ?) &nbsp;</label><input id="upperBound2"><br>
+                <input type="button" value="calculate" onclick="binomialCDF()"><br>
+            </form>
+            <p id="binomialCDF"></p>
+            <p id="statistic3"></p><br>
+            <form>
+                <p>Binomial PDF: <br> Probability of getting exactly k successes in n trials</p>
+                <p>let x = # of succesfull trials of event A: p(x = k) = ?</p>
+                <label>What is the probability of success? (p = ?) &nbsp;</label><input id="probSuccess4"><br>
+                <label>What is the number of succesfull trials desired (k = ?) &nbsp; </label><input id="succesfullTrials"><br>
+                <label>What is the number of trials? (n = ?)&nbsp;</label><input id="numTrials2"><br>
+                <input type="button" value="Calculate" onclick="binomialPDF()">
+            </form>
+            <p id="binomialPDF"></p>
+            <p id="statistic4"></p><br>
+        </div>
+    </div>
+</div>
+{% endblock %}

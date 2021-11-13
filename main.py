@@ -13,5 +13,13 @@ def index():
     print(num2)
     return render_template("index.html", random=num2)
 
+@app.route('/calculator', methods=['GET', 'POST'])
+def calculator():
+    return render_template("calculator.html")
+
+@app.route('/probability', methods=['GET', 'POST'])
+def probability():
+    return render_template("probability.html")
+
 if __name__ == "__main__":
     app.run(debug=True)
