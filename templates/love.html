@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block script %}
+<script>
+    function nameCheck(name){
+        let l = 0
+        let o = 0
+        let v = 0
+        let e = 0
+        let s = 0
+        for(let i=0; i < name.length; i++){
+            if(name[i] === "l"){
+                l += 1
+            }
+            else{
+            }
+            if(name[i] === "o"){
+                o += 1
+            }
+            if(name[i] === "v"){
+                v += 1
+            }
+            if(name[i] === "e"){
+                e += 1
+            }
+            if(name[i] === "s"){
+                s += 1
+            }
+        }
+        let list = [l, o, v, e, s]
+        return list
+    }
+    function loveGame(){
+        let userName = document.getElementById("userName2").value
+        let partnerName = document.getElementById("partnerName2").value
+        let userNameCount = nameCheck(userName)
+        let partnerNameCount = nameCheck(partnerName)
+        let l = userNameCount[0] + partnerNameCount[0]
+        let o = userNameCount[1] + partnerNameCount[1]
+        let v = userNameCount[2] + partnerNameCount[2]
+        let e = userNameCount[3] + partnerNameCount[3]
+        let s = userNameCount[4] + partnerNameCount[4]
+        let string = "" + l + o + v + e + s
+        while (string.length > 2){
+            for (let i = 0; i < string.length-1; i++){
+                num = parseInt(string[i]) + parseInt(string[i+1])
+                if(i === 0){
+                    string = "" + num + string.substring(i+1, string.length)
+                }
+                else{
+                    string = "" + string.substring(0, i) + num + string.substring(i+1, string.length)
+                }
+                //string = string.substring(0, string.length - 1)
+                //alert(string)
+            }
+            string = string.substring(0, string.length - 1)
+        }
+        document.getElementById("lovePercent2").innerHTML = userName + " and " + partnerName + " have a compatability percent of " + string + "%!"
+    }
+</script>
+{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+    <div class="row">
+            <form>
+                <h1><center>The Love Game</center></h1>
+                <form>
+                    <center><img src="/static/assets/ab.png" height="400" width="400"><br></center>
+                    <p> When you insert you and someone else's names below, a calculation will be done identical to the one above but with your names placed in the two name slots.</p><br>
+                    <p>Insert your name here</p><input id="userName2">
+                    <p>Insert Your Partner's Name Below</p>
+                    <input id="partnerName2"><br><br>
+                    <input type="button" value="Calculate Love Percentage" onclick="loveGame()"><br>
+                    <p id="lovePercent2"></p>
+                </form>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

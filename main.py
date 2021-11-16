@@ -21,5 +21,9 @@ def calculator():
 def probability():
     return render_template("probability.html")
 
+@app.route('/love', methods=['GET', 'POST'])
+def love():
+    return render_template("love.html")
+
 if __name__ == "__main__":
     app.run(debug=True)
