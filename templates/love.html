@@ -2,6 +2,10 @@
 
 {% block script %}
 <script>
+    function hello(){
+        alert1 = document.getElementById("hidden").innerHTML
+        alert(alert1)
+    }
     function nameCheck(name){
         let l = 0
         let o = 0
@@ -30,7 +34,7 @@
         let list = [l, o, v, e, s]
         return list
     }
-    function loveGame(){
+    function loveGame() {
         let userName = document.getElementById("userName2").value
         let partnerName = document.getElementById("partnerName2").value
         let userNameCount = nameCheck(userName)
@@ -41,41 +45,51 @@
         let e = userNameCount[3] + partnerNameCount[3]
         let s = userNameCount[4] + partnerNameCount[4]
         let string = "" + l + o + v + e + s
-        while (string.length > 2){
-            for (let i = 0; i < string.length-1; i++){
-                num = parseInt(string[i]) + parseInt(string[i+1])
-                if(i === 0){
-                    string = "" + num + string.substring(i+1, string.length)
+        //let isgreat = false
+        while (string.length > 2) {
+            for (let i = 0; i < string.length - 1; i++) {
+                num = parseInt(string[i]) + parseInt(string[i + 1])
+                if (i === 0 && num < 10) {
+                    string = "" + num + string.substring(i + 1, string.length)
+                } else if (i !== 0 && num < 10) {
+                    string = "" + string.substring(0, i) + num + string.substring(i + 1, string.length)
+                } else if (i !== 0 && num >= 10) {
+                    //isgreat = false
+                    string = "" + string.substring(0, i) + num + string.substring(i + 2, string.length) // fix
+                    }
+                if (i === string.length - 2 && num < 10) {
+                    string = string.substring(0, string.length - 1)
                 }
-                else{
-                    string = "" + string.substring(0, i) + num + string.substring(i+1, string.length)
+                    //string = string.substring(0, string.length - 1)
+                    //alert(string)
                 }
-                //string = string.substring(0, string.length - 1)
                 //alert(string)
             }
-            string = string.substring(0, string.length - 1)
-        }
-        document.getElementById("lovePercent2").innerHTML = userName + " and " + partnerName + " have a compatability percent of " + string + "%!"
+            document.getElementById("lovePercent2").innerHTML = userName + " and " + partnerName + " have a compatability percent of " + string + "%!"
     }
 </script>
 {% endblock %}
 
 {% block body %}
+<body onload="hello()">
 <div class="container-fluid">
     <div class="row">
-            <form>
+        <div class="col-12">
                 <h1><center>The Love Game</center></h1>
-                <form>
-                    <center><img src="/static/assets/ab.png" height="400" width="400"><br></center>
-                    <p> When you insert you and someone else's names below, a calculation will be done identical to the one above but with your names placed in the two name slots.</p><br>
-                    <p>Insert your name here</p><input id="userName2">
-                    <p>Insert Your Partner's Name Below</p>
-                    <input id="partnerName2"><br><br>
-                    <input type="button" value="Calculate Love Percentage" onclick="loveGame()"><br>
-                    <p id="lovePercent2"></p>
+                <form action="{{ url_for('love') }}" name="feedbackForm" method="POST"><!-- uses the post method to send the form data to the URL. The server recieves data through the POST method and to get out the data you do request.form['input name']. get requests are used to request a recource and the parameters are displayed as question mark things in the URL-->
+                    <center><img src="/static/assets/ab.png" height="300" width="300"><br></center> <!-- the post method sends data to the server -->
+                    <p>Insert your name here</p> <!-- an HTTP request is made by the client to get a recource from the server -->
+                    <input id="userName2" name="userName2"> <!-- get and post requests follow the HTTP protocol/set of rules -->
+                    <p>Insert Your Partner's Name Below</p> <!-- HTTP is just a set of rules that stuff follows -->
+                    <input id="partnerName2" name="partnerName2"><br><br> <!--forms allow users to send data to the server and we csn get the data from teh server -->
+                    <!--<input type="button" value="Calculate Love Percentage" onclick="loveGame()"><br>-->
+                    <input type="submit" name="butt" value="Calculate Love Percentage"><br> <!-- the version of the HTTP protocol specifics the correct format of HTTP requests and responses. the two tpes of requests are a get request and a post request. the HTT version is seen in the request like like HTTP/1.1 is version 1.1 --><!-- you are basically posting it to the function in the action clause -->
+                    <p hidden id="hidden">{{message}}</p>
+                    <p> When you insert you and someone else's names in the input fields, a calculation will be done identical to the one above but with your names placed in the two name slots.</p><br>
+                    <!--<p id="lovePercent2"></p>-->
                 </form>
-            </form>
         </div>
     </div>
 </div>
+</body>
 {% endblock %}
